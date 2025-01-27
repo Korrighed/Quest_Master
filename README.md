@@ -21,13 +21,8 @@ git commit -m"Ajout Dist pour prod"
 ```
 ```sh
 git subtree push --prefix dist origin gh-pages
+```
+Or
+```sh
 git subtree push --prefix dist template gh-pages
 ```
-
-
-## To push new version 
-```sh
-git push origin --delete gh-pages
-```
-```sh
-git 
