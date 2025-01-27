@@ -3,6 +3,9 @@
 This is a basic template for a Vite + JS app. 
 It is meant to be easly served on gh-pages. 
 
+# Naming convention
+Don't forget to addapte the name of your projet to reflect the name of your repo
+
 ## gh-pages 
 To deploy on git hub pages a sub branch of main as gh-pages.        
 This sub branch will only serv the dist file. 
