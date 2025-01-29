@@ -1,0 +1,54 @@
+  /* Grille personnalisée */
+
+
+  .game-grid {
+    aspect-ratio: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    padding: 1px;
+    background-color: #f0f0f0;
+    max-height: 50vh;
+    margin: 1vh
+  }
+  
+  .grid-cell {
+    aspect-ratio: 1;
+    background-color: white;
+    border: 1px solid #ddd;
+    transition: all 0.2s;
+  }
+  
+  .player-start {
+    background-color: #4CAF50 !important;
+    /* background-image: url('../../assets/player.png'); */
+    background-size: cover;
+  }
+  
+  /* Classe pour les monstres (sera ajoutée dynamiquement) */
+  .grid-cell.enemy {
+    background-color: #ff4444 !important;
+    /* background-image: url('../../assets/monster.png'); */
+    background-size: cover;
+  }
+
+
+  .controls-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    place-items: center;
+  }
+  
+  .arrow-btn {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+  }
+  
+  .arrow-btn:hover {
+    background-color: #e9ecef;
+  }

@@ -1,43 +1,31 @@
-// src/modules/map/map.js
+import '../../styles/game-view.css';
+
 export default class Map {
-    constructor() {
-      this.mapElement = document.getElementById("map"); // Cible l'élément où la carte sera injectée
+    constructor(containerId) {
+      this.container = document.getElementById(containerId);
+      this.grid = null;
     }
   
     generateGrid() {
-      const tableHTML = `
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry the Bird</td>
-              <td> The Bird</td>
-              <td>@twitter</td>
-            </tr>
-          </tbody>
-        </table>
-      `;
+      this.grid = document.createElement('div');
+      this.grid.className = 'game-grid';
+      
+      for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 8; col++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          cell.dataset.row = row;
+          cell.dataset.col = col;
+          this.grid.appendChild(cell);
+        }
+      }
+      
+      this.container.appendChild(this.grid);
+    }
   
-      this.mapElement.innerHTML = tableHTML; // Injecte la table HTML dans le DOM
+    // API minimale pour updates
+    updateCell(x, y, type) {
+      const cell = this.grid.querySelector(`[data-col="${x}"][data-row="${y}"]`);
+      cell.className = `grid-cell ${type}`; // 'player', 'enemy', etc.
     }
   }
