@@ -14,7 +14,7 @@ export class Movement {
     });
   }
 
-  handleMove(direction) { // NOUVELLE METHODE MANQUANTE
+  handleMove(direction) { 
     const newPos = this._calculateNewPosition(direction);
     if (this._isValidPosition(newPos)) {
       this._updatePosition(newPos);
