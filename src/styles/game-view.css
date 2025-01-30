@@ -1,26 +1,22 @@
-  /* Grille personnalisée */
-
-
   .game-grid {
-    aspect-ratio: 1;
+    width: 20vw; 
+    height: 50vh;
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    padding: 1px;
+    grid-template-columns: repeat(8, minmax(0, 1fr)); 
+    grid-auto-rows: 1fr;
     background-color: #f0f0f0;
-    max-height: 50vh;
-    margin: 1vh
+    margin: 1vh;
   }
   
   .grid-cell {
-    aspect-ratio: 1;
-    background-color: white;
-    border: 1px solid #ddd;
-    transition: all 0.2s;
+    min-width: 0; /* Permet le redimensionnement */
+    min-height: 0;
+    background-size: cover;
   }
   
-  .player-start {
+  .grid-cell.player  {
     background-color: #4CAF50 !important;
-    /* background-image: url('../../assets/player.png'); */
+    background-image: url('../../assets/player.svg');
     background-size: cover;
   }
   
@@ -32,22 +28,31 @@
   }
 
 
+
   .controls-grid {
     display: grid;
+    grid-template-areas:
+      ". up ."
+      "left . right"
+      ". down .";
     grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 10px;
-    place-items: center;
+    max-width: 200px;
+    margin: 0 auto;
   }
   
   .arrow-btn {
-    width: 50px;
+    width: 100%;
     height: 50px;
-    border: 2px solid #333;
-    border-radius: 8px;
-    font-size: 24px;
-    cursor: pointer;
-    background-color: #f8f9fa;
+    /* Styles existants préservés */
   }
+  
+  /* Placement explicite via grid-area */
+  [data-direction="up"] { grid-area: up; }
+  [data-direction="left"] { grid-area: left; }
+  [data-direction="right"] { grid-area: right; }
+  [data-direction="down"] { grid-area: down; }
   
   .arrow-btn:hover {
     background-color: #e9ecef;
