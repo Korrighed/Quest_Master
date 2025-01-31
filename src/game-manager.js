@@ -1,8 +1,9 @@
 import Player from './modules/player/player.js';
-import Enemies from './modules/enemies/enemies.js';
+import Spawner from './modules/enemies/spawner.js';
 import { Movement } from './modules/player/movement.js';
 import Map from './modules/map/map.js';
 import UI from './modules/ui/ui.js';
+import { Encounter } from './modules/combat/encouter.js'
 
 export default class GameManager {
   constructor() {
@@ -28,11 +29,29 @@ export default class GameManager {
   _spawnEntities() {
     // Délégation aux modules spécialisés
     this.player.spawn(this.stateMatrix, this.map);
-    Enemies.spawn(this.stateMatrix, this.map);
+    Spawner.spawn(this.stateMatrix, this.map);
   }
 
   _handlePositionUpdate(oldPos, newPos) {
-    // Mise à jour de la matrice et du DOM
+    const monster = this.stateMatrix[newPos.y][newPos.x];
+    
+    if (monster?.type) { 
+      const encounter = new Encounter(this.player, monster);
+      const result = encounter.resolve();
+  
+      if (result.victoire) {
+        this.stateMatrix[newPos.y][newPos.x] = 'player';
+        this.map.updateCell(newPos.x, newPos.y, 'player');
+      } else {
+        // Revert position
+        this.player.setPosition(oldPos);
+        this.map.updateCell(newPos.x, newPos.y, monster.type);
+        this.map.updateCell(oldPos.x, oldPos.y, 'player');
+        return; // Stop le processus
+      }
+    }
+  
+    // Mise à jour normale si pas de monstre
     this.stateMatrix[oldPos.y][oldPos.x] = null;
     this.stateMatrix[newPos.y][newPos.x] = 'player';
     this.map.updateCell(oldPos.x, oldPos.y, 'empty');

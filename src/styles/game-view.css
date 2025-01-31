@@ -1,3 +1,4 @@
+  /**** map  ***/
   .game-grid {
     width: 20vw; 
     height: 50vh;
@@ -8,27 +9,40 @@
     margin: 1vh;
   }
   
+
   .grid-cell {
     min-width: 0; /* Permet le redimensionnement */
     min-height: 0;
     background-size: cover;
+    border:  2px solid;
   }
   
-  .grid-cell.player  {
-    background-color: #4CAF50 !important;
-    background-image: url('../../assets/player.svg');
-    background-size: cover;
+    /**** Entitées ***/
+  .player-cell {
+    background-color: #00f;
   }
   
-  /* Classe pour les monstres (sera ajoutée dynamiquement) */
-  .grid-cell.enemy {
-    background-color: #ff4444 !important;
-    /* background-image: url('../../assets/monster.png'); */
-    background-size: cover;
+  .enemy-cell {
+    background-color: #f00;
+  }
+  
+  .enemy-cell.goblin::after {
+    content: "G";
+    color: white;
+  }
+  
+  .enemy-cell.ogre::after {
+    content: "O";
+    color: white;
+    font-size: 1.2em;
+  }
+  
+  .empty-cell {
+    background-color: #fff;
   }
 
 
-
+  /**** GamePad ***/
   .controls-grid {
     display: grid;
     grid-template-areas:
@@ -54,6 +68,3 @@
   [data-direction="right"] { grid-area: right; }
   [data-direction="down"] { grid-area: down; }
   
-  .arrow-btn:hover {
-    background-color: #e9ecef;
-  }

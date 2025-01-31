@@ -35,8 +35,7 @@ export class Movement {
   _isValidPosition(pos) {
     return (
       pos.x >= 0 && pos.x < 8 &&
-      pos.y >= 0 && pos.y < 10 &&
-      this.stateMatrix[pos.y][pos.x] !== 'enemy'
+      pos.y >= 0 && pos.y < 10 
     );
   }
 

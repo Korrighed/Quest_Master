@@ -1,21 +1,29 @@
 export default class Player {
   constructor() {
-    this.x = 0;
-    this.y = 0;
+    this.maxHp = 10;
+    this.force = 3;
+    this.hp = this.maxHp;
+    this.xp = 0;
+    this._x = 0;
+    this._y = 0; 
   }
 
-  // Nouvelle méthode pour gérer l'apparition initiale
-  spawn(stateMatrix, map) {
-    stateMatrix[this.y][this.x] = 'player';
-    map.updateCell(this.x, this.y, 'player');
+  gainXP(amount) {
+    this.xp += amount;
+    console.log(`+${amount} XP (Total: ${this.xp})`);
   }
 
   get position() {
-    return { x: this.x, y: this.y };
+    return { x: this._x, y: this._y };
   }
 
   setPosition(pos) {
-    this.x = pos.x;
-    this.y = pos.y;
+    this._x = pos.x;
+    this._y = pos.y;
+  }
+
+  spawn(stateMatrix, map) {
+    stateMatrix[this._y][this._x] = 'player';
+    map.updateCell(this._x, this._y, 'player');
   }
 }
