@@ -1,14 +1,40 @@
 export default class Player {
   constructor() {
-    this.maxHp = 10;
-    this.force = 3;
-    this.hp = this.maxHp;
-    this.xp = 0;
+    this._maxHp = 10;
+    this._force = 3;
+    this._hp = this._maxHp;
+    this._xp = 0;
     this._x = 0;
     this._y = 0; 
   }
+  get maxHp() { return this._maxHp; }
+  set maxHp(value) { this._maxHp = value; }
 
-  gainXP(amount) {
+  get hp() { return this._hp; }
+  set hp(value) {
+    this._hp = Math.max(0, Math.min(value, this._maxHp));
+    document.dispatchEvent(new CustomEvent('playerStatsUpdated', {
+      detail: { stat: 'hp', value: this._hp }
+    }));
+  }
+
+  get force() { return this._force; }
+  set force(value) {
+    this._force = value;
+    document.dispatchEvent(new CustomEvent('playerStatsUpdated', {
+      detail: { stat: 'force', value: this._force }
+    }));
+  }
+
+  get xp() { return this._xp; }
+  set xp(value) {
+    this._xp = value;
+    document.dispatchEvent(new CustomEvent('playerStatsUpdated', {
+      detail: { stat: 'xp', value: this._xp }
+    }));
+  }
+
+    gainXP(amount) {
     this.xp += amount;
     console.log(`+${amount} XP (Total: ${this.xp})`);
   }
@@ -26,4 +52,6 @@ export default class Player {
     stateMatrix[this._y][this._x] = 'player';
     map.updateCell(this._x, this._y, 'player');
   }
+
+
 }

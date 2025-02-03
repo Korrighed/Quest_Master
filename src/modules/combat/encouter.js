@@ -12,13 +12,15 @@ export class Encounter {
 
             const playerForce = Number(this.player.force);
             this.monster.hp -= playerForce; 
-            this.logs.push(`Joueur attaque: ${this.monster.name} -${playerForce}PV (reste ${this.monster.hp})`);
-
+            this._dispatchLog(`Joueur attaque: ${this.monster.name} -${playerForce}PV 
+                (reste ${this.monster.hp})`);
             if (this.monster.hp <= 0) break;
+
             const monsterForce = Number(this.monster.force);
             this.player.hp = Math.max(this.player.hp - monsterForce, 0);
-            this.logs.push(`${this.monster.name} attaque: Joueur -${monsterForce}PV (reste ${this.player.hp})`);
-        }
+            this._dispatchLog(`${this.monster.name} attaque: Joueur -${monsterForce}PV 
+                (reste ${this.player.hp})`);
+    }
 
         result.victoire = this.monster.hp <= 0;
         result.playerDead = this.player.hp <= 0;
@@ -27,10 +29,16 @@ export class Encounter {
             this.player.hp = this.player.maxHp;
             this.logs.push(`Victoire! Joueur soigné (${this.player.hp}/${this.player.maxHp} PV)`);
         }
-        
-        this.logs.forEach(log => console.log(log));
-        console.log(result.victoire ? 'VICTOIRE' : 'GAME OVER');
 
+        this._dispatchLog('-------------------------');
+        
+        document.dispatchEvent(new CustomEvent('combatOutcome', { detail: result }));
         return result;
-    }
+        }
+        
+        _dispatchLog(message) {
+            this.logs.push(message);
+            document.dispatchEvent(new CustomEvent('combatLogEntry', { detail: message }));
+        }
 }
+        

@@ -4,9 +4,13 @@ import { Movement } from './modules/player/movement.js';
 import Map from './modules/map/map.js';
 import UI from './modules/ui/ui.js';
 import { Encounter } from './modules/combat/encouter.js'
+import { CombatLog } from './modules/combat/combat-log.js';
+import { CombatUI } from './modules/ui/combat-ui.js';
 
 export default class GameManager {
   constructor() {
+    CombatLog.init();
+    CombatUI.init();
     this.stateMatrix = Array(10).fill().map(() => Array(8).fill(null));
     this.map = new Map('map');
     this.player = new Player();
