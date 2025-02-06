@@ -1,4 +1,4 @@
-import { Goblin, Ogre } from '../enemies/monsters.js';
+import { Goblin, Ogre, Dragon } from '../enemies/monsters.js';
 import { Encounter } from './encouter.js';
 
 export class CombatSystem {
@@ -6,7 +6,7 @@ export class CombatSystem {
     document.addEventListener('playerMoved', (e) => {
       const { oldPos, newPos, monster } = e.detail;
       
-      if (monster instanceof Goblin || monster instanceof Ogre) {
+      if (monster instanceof Goblin || monster instanceof Ogre || monster instanceof Dragon) {
         const encounter = new Encounter(gameState.player, monster);
         const result = encounter.resolve();
 
@@ -18,15 +18,19 @@ export class CombatSystem {
           if (monster.xpValue > 0) { 
             gameState.player.gainXP(monster.xpValue);
           }
-
-
+          if (monster instanceof Dragon) { 
+            document.dispatchEvent(new CustomEvent('dragonSlain'));
+          }
           document.dispatchEvent(new CustomEvent('combatWon', { 
             detail: { monster, player: gameState.player } 
           }));
+
         } else {
           gameState.stateMatrix[oldPos.y][oldPos.x] = null;
           gameState.map.updateCell(oldPos.x, oldPos.y, 'empty');
-          document.dispatchEvent(new CustomEvent('gameOver'));
+          document.dispatchEvent(new CustomEvent('gameOver', { 
+            detail: { vsDragon: monster instanceof Dragon } 
+          }));
         }
       }
     });

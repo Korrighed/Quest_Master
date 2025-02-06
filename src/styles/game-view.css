@@ -38,7 +38,7 @@
   }
 
   .enemy-cell.dragon::after {
-    content: "D🐉";
+    content: "D";
     color:#ffd700 ;
     font-size: 1.2em;
   }
@@ -74,4 +74,57 @@
   [data-direction="left"] { grid-area: left; }
   [data-direction="right"] { grid-area: right; }
   [data-direction="down"] { grid-area: down; }
+
+  /* Modal de fin de partie */
+  .endgame-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .endgame-content {
+    background: #1a1a1a;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid #ffd700;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .endgame-content h2 {
+    color: #ff4654;
+    font-size: 2.5em;
+    margin-bottom: 1rem;
+  }
+  
+  .endgame-content p {
+    color: #fff;
+    font-size: 1.2em;
+    margin-bottom: 2rem;
+  }
+  
+  #restart-btn  {
+    background: #2b2b2b;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.2s, background 0.3s;
+  }
+  
+  #restart-btn:hover   {
+    background: #3a3a3a;
+    transform: scale(1.05);
+  }
   

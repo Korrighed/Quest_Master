@@ -3,7 +3,6 @@ import { Goblin, Ogre, Dragon } from './monsters.js';
 export default class Spawner  {
   static SPAWN_RANGE = { min: 10, max: 50 };
   static DRAGON_SPAWN_CHANCE = 1.0;
-
   static _getEmptyCells(matrix) {
     const cells = [];
     for (let y = 0; y < matrix.length; y++) {

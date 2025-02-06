@@ -65,8 +65,7 @@ export default class Player {
   get level() { return this._level; }
   set level(value) {
       this._level = value;
-      this._dispatchStatsUpdate('level');
-      console.log(this._level); 
+      this._dispatchStatsUpdate('level'); 
   }
 
 }

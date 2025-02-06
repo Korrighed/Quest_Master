@@ -6,6 +6,8 @@ import UI from './modules/ui/ui.js';
 import { CombatLog } from './modules/combat/combat-log.js';
 import { CombatUI } from './modules/ui/combat-ui.js';
 import  { CombatSystem } from './modules/combat/combat-systeme.js'; 
+import EndgameUI from './modules/ui/endgame-ui.js';
+import CombatEndgame from './modules/combat/combat-endgame.js'; 
 
 export default class GameManager {
   constructor() {
@@ -13,27 +15,28 @@ export default class GameManager {
       this.map = new Map('map');
       this.player = new Player();
       this.ui = UI;
+      this.endgameUI = new EndgameUI();
   }
-      async setup() {
-        window.gameState = {
-          player: this.player
-      };
+  async setup() {
+    window.gameState = {
+      player: this.player
+  };
 
-        CombatLog.init();
-        await CombatUI.init();
-        
-        CombatSystem.init(this);
-        
-        this.movement = new Movement(
-            this.player,
-            this.stateMatrix,
-            (oldPos, newPos) => this._handlePositionUpdate(oldPos, newPos)
-        );
-        
-        this._initEventListeners();
-        this.init();
-        return this;
-    }
+    CombatLog.init();
+    await CombatUI.init();
+    
+    CombatSystem.init(this);
+    
+    this.movement = new Movement(
+        this.player,
+        this.stateMatrix,
+        (oldPos, newPos) => this._handlePositionUpdate(oldPos, newPos)
+    );
+    
+    this._initEventListeners();
+    this.init();
+    return this;
+  }
 
   init() {
     this.map.generateGrid();
@@ -50,16 +53,23 @@ export default class GameManager {
       this.map.updateCell(x, y, 'player');
     });
     document.addEventListener('gameOver', () => {
-      console.log("Game Over!");
+      console.log("Game Over!"); 
+        this.endgameUI.show('Défaite', 'Le dragon vous a réduit en cendre!');
+        this._disableControls();
+    });
+    document.addEventListener('dragonSlain', () => {
+      const victoryCondition = CombatEndgame.checkEndgame(this.player, { type: 'dragon' });
+      if (victoryCondition === 'victory') {
+        this.endgameUI.show('VICTOIRE', 'Le dragon est vaincu son trésort vous appartiens !');
+        this._disableControls();
+      }
     });
     document.addEventListener('playerStatsUpdated', () => {
-      // Mettre à jour gameState quand les stats changent
       window.gameState = {
           player: this.player
       };
-  });
+    });
   }
-
   _spawnEntities() {
     this.player.spawn(this.stateMatrix, this.map);
     Spawner.spawn(this.stateMatrix, this.map);
@@ -80,6 +90,13 @@ export default class GameManager {
   _updateGameState(oldPos, newPos) {
     this.map.updateCell(oldPos.x, oldPos.y, 'empty');
     this.map.updateCell(newPos.x, newPos.y, 'player');
+  }
+
+  _disableControls() {
+    this.movement.arrowControls.forEach(control => 
+      control.style.pointerEvents = 'none'
+    );
+    document.removeEventListener('keydown', this.movement.handleKeyPress);
   }
 
   getState() {

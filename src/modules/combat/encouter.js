@@ -9,7 +9,10 @@ export class Encounter {
     }
 
     resolve() {
-        let result = { victoire: false, playerDead: false };
+        let result = { victoire: false, 
+            playerDead: false,
+            monsterType: this.monster.type 
+        };
 
         while (this.player.hp > 0 && this.monster.hp > 0) {
             const playerForce = Number(this.player.force);
@@ -33,7 +36,9 @@ export class Encounter {
             this.player.xp += this.monster.xpValue;
 
             // Soins
-            this.player.hp = this.player.maxHp;
+            if (this.monster.type !== 'dragon') {
+                this.player.hp = this.player.maxHp;
+            }
 
             // Vérification du level up après le gain d'XP
             this.levelSystem.checkLevelUp();
@@ -41,7 +46,6 @@ export class Encounter {
 
         this._dispatchLog('-------------------------');
         document.dispatchEvent(new CustomEvent('combatOutcome', { detail: result }));
-
         return result;
         }
         
