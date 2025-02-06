@@ -36,6 +36,13 @@
     color: white;
     font-size: 1.2em;
   }
+
+  .enemy-cell.dragon::after {
+    content: "D🐉";
+    color:#ffd700 ;
+    font-size: 1.2em;
+  }
+  
   
   .empty-cell {
     background-color: #fff;

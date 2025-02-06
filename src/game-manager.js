@@ -8,7 +8,7 @@ import { CombatUI } from './modules/ui/combat-ui.js';
 import  { CombatSystem } from './modules/combat/combat-systeme.js'; 
 
 export default class GameManager {
-   constructor() {
+  constructor() {
       this.stateMatrix = Array(10).fill().map(() => Array(8).fill(null));
       this.map = new Map('map');
       this.player = new Player();

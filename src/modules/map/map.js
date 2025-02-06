@@ -37,6 +37,7 @@ export default class Map {
         break;
       case 'goblin':
       case 'ogre':
+      case 'dragon':
         cell.classList.add('enemy-cell', type);
         break;
       default:
