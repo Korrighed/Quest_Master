@@ -1,12 +1,19 @@
+import {LevelSystem} from './level-system.js'
+
 export default class Player {
   constructor() {
     this._maxHp = 10;
-    this._force = 3;
-    this._hp = this._maxHp;
-    this._xp = 0;
+    this._force = 3; 
+    this._xp = 0;    
+    this.hp = this._maxHp; 
+    this.force = this._force; 
+    this.xp = this._xp; 
     this._x = 0;
-    this._y = 0; 
+    this._y = 0;
+    this._level = 1;
+    this.levelSystem = new LevelSystem(this);
   }
+
   get maxHp() { return this._maxHp; }
   set maxHp(value) { this._maxHp = value; }
 
@@ -26,17 +33,11 @@ export default class Player {
     }));
   }
 
-  get xp() { return this._xp; }
-  set xp(value) {
-    this._xp = value;
-    document.dispatchEvent(new CustomEvent('playerStatsUpdated', {
-      detail: { stat: 'xp', value: this._xp }
-    }));
-  }
 
-    gainXP(amount) {
-    this.xp += amount;
-    console.log(`+${amount} XP (Total: ${this.xp})`);
+  _dispatchStatsUpdate(stat) {
+      document.dispatchEvent(new CustomEvent('playerStatsUpdated', {
+          detail: { stat, value: this[`_${stat}`] }
+      }));
   }
 
   get position() {
@@ -51,6 +52,22 @@ export default class Player {
   spawn(stateMatrix, map) {
     stateMatrix[this._y][this._x] = 'player';
     map.updateCell(this._x, this._y, 'player');
+  }
+
+  get xp() { return this._xp; }
+  set xp(value) {
+    this._xp = value;
+    this._dispatchStatsUpdate('xp');
+  }
+
+  get level() { return this._level; }
+  set level(value) {
+      this._level = value;
+      this._dispatchStatsUpdate('level');
+      console.log(this._level); 
+  }
+  gainXP(amount) {
+      this.xp = this._xp + amount; // Utilise le setter
   }
 
 

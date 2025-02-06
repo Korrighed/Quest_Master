@@ -2,13 +2,10 @@
 export class CombatLog {
     static init() {
       this.logEntries = [];
-      this.playerStats = {
-        hp: 0,
-        xp: 0,
-        force: 0
-      };
+      this.playerStats = {hp: 0, xp: 0, force: 0};
   
       document.addEventListener('playerStatsUpdated', (e) => {
+        
         this.playerStats[e.detail.stat] = e.detail.value;
       });
   

@@ -24,6 +24,7 @@ export default class Spawner  {
   
   static spawn(stateMatrix, map) {
     const availableCells = this._getEmptyCells(stateMatrix);
+    console.log("[Spawner] Création de monstres...");
     const positions = this._shuffleAndSelect(availableCells);
     
     positions.forEach(({ x, y }) => {

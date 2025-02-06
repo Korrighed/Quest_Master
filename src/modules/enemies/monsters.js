@@ -13,7 +13,17 @@ export class Goblin {
       this.name = "Ogre";
       this.hp = 6;
       this.force = 3;
-      this.xpValue = 3;
+      this.xpValue = 6;
       this.type = 'ogre';
     }
+  }
+
+  export class Dragon {
+      constructor() {
+        this.name = "Dragon";
+        this.hp = 12;
+        this.force = 9;
+        this.xpValue = 20;
+        this.type = 'dragon';
+      }
   }

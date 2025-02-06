@@ -3,35 +3,64 @@ import Spawner from './modules/enemies/spawner.js';
 import { Movement } from './modules/player/movement.js';
 import Map from './modules/map/map.js';
 import UI from './modules/ui/ui.js';
-import { Encounter } from './modules/combat/encouter.js'
 import { CombatLog } from './modules/combat/combat-log.js';
 import { CombatUI } from './modules/ui/combat-ui.js';
+import  { CombatSystem } from './modules/combat/combat-systeme.js'; 
 
 export default class GameManager {
-  constructor() {
-    CombatLog.init();
-    CombatUI.init();
-    this.stateMatrix = Array(10).fill().map(() => Array(8).fill(null));
-    this.map = new Map('map');
-    this.player = new Player();
-    this.ui = UI;
-    this.movement = new Movement(
-      this.player,
-      this.stateMatrix,
-      (oldPos, newPos) => this._handlePositionUpdate(oldPos, newPos)
-    );
+   constructor() {
+      this.stateMatrix = Array(10).fill().map(() => Array(8).fill(null));
+      this.map = new Map('map');
+      this.player = new Player();
+      this.ui = UI;
   }
+      async setup() {
+        window.gameState = {
+          player: this.player
+      };
+
+        CombatLog.init();
+        await CombatUI.init();
+        
+        CombatSystem.init(this);
+        
+        this.movement = new Movement(
+            this.player,
+            this.stateMatrix,
+            (oldPos, newPos) => this._handlePositionUpdate(oldPos, newPos)
+        );
+        
+        this._initEventListeners();
+        this.init();
+        return this;
+    }
 
   init() {
     this.map.generateGrid();
     this.ui.createArrowControls('player-ui');
     this.movement.initArrowListeners();
     this._spawnEntities();
-    window.addEventListener('keydown', (e) => this.movement.handleKeyPress(e));
+  }
+
+  _initEventListeners() {
+    // Écoute des résultats de combat
+    document.addEventListener('combatWon', (e) => {
+      const { x, y } = this.player.position;
+      this.stateMatrix[y][x] = 'player';
+      this.map.updateCell(x, y, 'player');
+    });
+    document.addEventListener('gameOver', () => {
+      console.log("Game Over!");
+    });
+    document.addEventListener('playerStatsUpdated', () => {
+      // Mettre à jour gameState quand les stats changent
+      window.gameState = {
+          player: this.player
+      };
+  });
   }
 
   _spawnEntities() {
-    // Délégation aux modules spécialisés
     this.player.spawn(this.stateMatrix, this.map);
     Spawner.spawn(this.stateMatrix, this.map);
   }
@@ -40,25 +69,33 @@ export default class GameManager {
     const monster = this.stateMatrix[newPos.y][newPos.x];
     
     if (monster?.type) { 
-      const encounter = new Encounter(this.player, monster);
-      const result = encounter.resolve();
-  
-      if (result.victoire) {
-        this.stateMatrix[newPos.y][newPos.x] = 'player';
-        this.map.updateCell(newPos.x, newPos.y, 'player');
-      } else {
-        // Revert position
-        this.player.setPosition(oldPos);
-        this.map.updateCell(newPos.x, newPos.y, monster.type);
-        this.map.updateCell(oldPos.x, oldPos.y, 'player');
-        return; // Stop le processus
-      }
+      document.dispatchEvent(new CustomEvent('playerMoved', {
+        detail: { oldPos, newPos, monster }
+      }));
+    } else {
+      this._updateGameState(oldPos, newPos);
     }
-  
-    // Mise à jour normale si pas de monstre
-    this.stateMatrix[oldPos.y][oldPos.x] = null;
-    this.stateMatrix[newPos.y][newPos.x] = 'player';
+  }
+
+  _updateGameState(oldPos, newPos) {
     this.map.updateCell(oldPos.x, oldPos.y, 'empty');
     this.map.updateCell(newPos.x, newPos.y, 'player');
+  }
+
+  getState() {
+    return {
+      player: this.player,
+      matrix: this.stateMatrix,
+      map: this.map
+    };
+  }
+
+  reset() {
+    this.stateMatrix = Array(10).fill().map(() => Array(8).fill(null));
+    this.player = new Player();
+    window.gameState = {
+      player: this.player
+  };
+  this.init();
   }
 }

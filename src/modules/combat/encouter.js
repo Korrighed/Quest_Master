@@ -1,15 +1,17 @@
+import { LevelSystem } from '../player/level-system.js';
+
 export class Encounter {
     constructor(player, monster) {
         this.player = player;
         this.monster = monster;
         this.logs = [];
+        this.levelSystem = new LevelSystem(player);
     }
 
     resolve() {
         let result = { victoire: false, playerDead: false };
 
         while (this.player.hp > 0 && this.monster.hp > 0) {
-
             const playerForce = Number(this.player.force);
             this.monster.hp -= playerForce; 
             this._dispatchLog(`Joueur attaque: ${this.monster.name} -${playerForce}PV 
@@ -26,6 +28,10 @@ export class Encounter {
         result.playerDead = this.player.hp <= 0;
 
         if (result.victoire) {
+            this.player.xp += this.monster.xpValue;
+            this._dispatchLog(`Gain de ${this.monster.xpValue} XP!`);
+            this.levelSystem.checkLevelUp();
+            
             this.player.hp = this.player.maxHp;
             this.logs.push(`Victoire! Joueur soigné (${this.player.hp}/${this.player.maxHp} PV)`);
         }

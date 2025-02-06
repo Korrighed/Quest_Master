@@ -41,6 +41,13 @@ export class Movement {
 
   _updatePosition(newPos) {
     const oldPos = this.player.position;
+    
+    const targetCell = this.stateMatrix[newPos.y][newPos.x];
+    if (!targetCell?.type) { 
+      this.stateMatrix[oldPos.y][oldPos.x] = null;
+      this.stateMatrix[newPos.y][newPos.x] = 'player';
+    }
+    
     this.player.setPosition(newPos);
     this.onMove(oldPos, newPos);
   }
