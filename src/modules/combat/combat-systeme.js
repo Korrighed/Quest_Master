@@ -30,10 +30,5 @@ export class CombatSystem {
         }
       }
     });
-    document.addEventListener('combatWon', (e) => {
-      const { monster, player } = e.detail;
-      const message = `+${monster.xpValue} XP (Total: ${player.xp})`;
-      document.dispatchEvent(new CustomEvent('combatLogEntry', { detail: message }));
-    });
   }
 }

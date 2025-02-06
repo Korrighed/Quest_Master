@@ -57,8 +57,10 @@ export default class Player {
   get xp() { return this._xp; }
   set xp(value) {
     this._xp = value;
-    this._dispatchStatsUpdate('xp');
   }
+  gainXP(amount) {
+    this.xp = this._xp + amount; 
+}
 
   get level() { return this._level; }
   set level(value) {
@@ -66,9 +68,5 @@ export default class Player {
       this._dispatchStatsUpdate('level');
       console.log(this._level); 
   }
-  gainXP(amount) {
-      this.xp = this._xp + amount; // Utilise le setter
-  }
-
 
 }

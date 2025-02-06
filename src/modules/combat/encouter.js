@@ -16,6 +16,7 @@ export class Encounter {
             this.monster.hp -= playerForce; 
             this._dispatchLog(`Joueur attaque: ${this.monster.name} -${playerForce}PV 
                 (reste ${this.monster.hp})`);
+
             if (this.monster.hp <= 0) break;
 
             const monsterForce = Number(this.monster.force);
@@ -28,17 +29,19 @@ export class Encounter {
         result.playerDead = this.player.hp <= 0;
 
         if (result.victoire) {
-            this.player.xp += this.monster.xpValue;
             this._dispatchLog(`Gain de ${this.monster.xpValue} XP!`);
-            this.levelSystem.checkLevelUp();
-            
+            this.player.xp += this.monster.xpValue;
+
+            // Soins
             this.player.hp = this.player.maxHp;
-            this.logs.push(`Victoire! Joueur soigné (${this.player.hp}/${this.player.maxHp} PV)`);
+
+            // Vérification du level up après le gain d'XP
+            this.levelSystem.checkLevelUp();
         }
 
         this._dispatchLog('-------------------------');
-        
         document.dispatchEvent(new CustomEvent('combatOutcome', { detail: result }));
+
         return result;
         }
         
@@ -46,5 +49,6 @@ export class Encounter {
             this.logs.push(message);
             document.dispatchEvent(new CustomEvent('combatLogEntry', { detail: message }));
         }
+        
 }
         
