@@ -1,7 +1,7 @@
-  /**** map  ***/
+@media only screen and (max-width: 930px) {
   #map .game-grid {
-    width: 20vw; 
-    height: 50vh;
+    width: 45vw; 
+    height: 60vh;
     display: grid;
     grid-template-columns: repeat(8, minmax(0, 1fr)); 
     grid-auto-rows: 1fr;
@@ -17,7 +17,6 @@
     border:  2px solid;
   }
   
-    /**** Entitées ***/
   .player-cell {
     background-color: #00f;
   }
@@ -75,17 +74,21 @@
   [data-direction="right"] { grid-area: right; }
   [data-direction="down"] { grid-area: down; }
 
-/* Logs du jeu *****************************/
-.stats-display{
-  border-bottom: 1px solid rgb(8, 170, 215)
-}
 
-.combat-logs {
+  /* Logs du jeu *****************************/
+
+  
+  .stats-display{
+    border-bottom: 2px solid rgb(8, 170, 215)
+  }
+
+  .combat-logs {
   max-height: 300px; 
-  overflow-y: auto
-
-}
-  /* Modal de fin de partie *****************************/
+  overflow-y: auto;
+  
+  }
+  
+  /* Modal de fin de partie  *****************************/
   .endgame-modal {
     position: fixed;
     top: 0;
@@ -138,3 +141,4 @@
     transform: scale(1.05);
   }
   
+}

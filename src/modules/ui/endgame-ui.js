@@ -10,7 +10,7 @@ export default class EndgameUI {
     _bindEvents() {
         this.modal.addEventListener('click', (e) => {
             if (e.target.id === 'restart-btn') {
-                window.location.reload(); // Rafraîchissement direct
+                window.location.reload(); 
             }
         });
     }

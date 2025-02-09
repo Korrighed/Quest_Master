@@ -1,5 +1,3 @@
-import '../../styles/game-view.css';
-
 export default class Map {
   constructor(containerId) {
     this.container = document.getElementById(containerId);

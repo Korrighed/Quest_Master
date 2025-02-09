@@ -1,6 +1,7 @@
 import GameManager from "./game-manager.js";
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap-icons/font/bootstrap-icons.css'
+import "./styles/game-view.css";
+import "./styles/game-view-mobile.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 async function startGame() {
     const gameManager = new GameManager();

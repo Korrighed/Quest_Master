@@ -11,6 +11,7 @@ Rename the path in .env.gh-pages according to your repo name.
 To deploy on git hub pages a sub branch of main as gh-pages.        
 This sub branch will only serv the dist file. 
 
+
 + make assets
 ```sh
 npm run build:gh-pages
